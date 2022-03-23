@@ -1,0 +1,5 @@
+.formFactorSmall{
+    max-width: none; 
+    overflow-x: scroll; 
+    -webkit-overflow-scrolling-x: touch;
+}

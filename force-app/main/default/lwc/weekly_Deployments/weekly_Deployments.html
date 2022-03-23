@@ -1,0 +1,293 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-03-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <div class="slds-box">
+    <article class="slds-card">
+      <div class="slds-page-header">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media">
+              <div class="slds-media__figure">
+                <span>
+                  <lightning-icon
+                    icon-name="standard:metrics"
+                    alternative-text="target"
+                    size="small"
+                  ></lightning-icon>
+                  <span class="slds-assistive-text">Weekly Deployments </span>
+                </span>
+              </div>
+              <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h1>
+                      <span
+                        class="slds-page-header__title slds-truncate"
+                        >Weekly Deployments</span
+                      >
+                    </h1>
+                  </div>
+                </div>
+                <p class="slds-page-header__name-meta"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slds-grid slds-gutters slds-p-around_small slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12">
+          <lightning-combobox
+            id="pickList"
+            name="progress"
+            label="Select Team Member"
+            variant={variant}
+            placeholder="Select"
+            options={teamUser}
+            onchange={handleUserChange}
+          >
+          </lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12">
+          <lightning-combobox
+            id="yearpicklist"
+            name="yearpicklist"
+            label="Select Year"
+            placeholder="Select Year"
+            options={yearOptions}
+            onchange={handleYearChange}
+          >
+          </lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12">
+          <lightning-combobox
+            id="monthpickList"
+            name="monthpicklict"
+            label="Select Month"
+            placeholder="Select Month"
+            options={monthOptions}
+            onchange={handleMonthChange}
+          >
+          </lightning-combobox>
+        </div>
+      </div>
+
+      <div class="slds-grid slds-gutters slds-p-around_small slds-wrap">
+        <div
+          class="slds-col slds-p-top_xx-small slds-size_1-of-1 slds-large-size_3-of-12"
+        >
+          <lightning-button
+            variant="brand"
+            label="Show Deployments"
+            title="Show Deployments"
+            onclick={showTask}
+          >
+          </lightning-button>
+        </div>
+      </div>
+
+      <template if:true={myList}>
+        <template if:true={myList.length}>
+          <lightning-card title="Deployments" icon-name="custom:custom102">
+            <!-- Custom Table For Task -->
+
+            <div
+              class="slds-p-around_x-small"
+              style="overflow-y: visible; overflow-x: auto"
+              data-id="myListTable"
+              if:true={myList}
+            >
+              <table
+                data-id="myTable"
+                class="slds-table slds-table_col-bordered slds-table--bordered"
+              >
+                <!-- Date Table Heading -->
+                <thead>
+                  <tr class="">
+                    <th class="slds-size_3-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                        Total Count
+                      </div>
+                    </th>
+                    <th class="slds-size_3-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                      </div>
+                    </th>
+                    <th class="slds-size_3-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                      </div>
+                    </th>
+                    <th class="slds-size_3-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                      </div>
+                    </th>
+                    <!-- <th class="slds-size_3-of-10" scope="col">
+                      <div class="slds-truncate" >TSM</div>
+                    </th> -->
+
+                    <th class="slds-size_3-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                        {weeklyCount.week1}
+                      </div>
+                    </th>
+                    <th class="slds-size_1-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                        {weeklyCount.week2}
+                      </div>
+                    </th>
+                    <th class="slds-size_1-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                        {weeklyCount.week3}
+                      </div>
+                    </th>
+                    <th class="slds-size_1-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                        {weeklyCount.week4}
+                      </div>
+                    </th>
+                    <!-- <th class="slds-size_1-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                        {weeklyCount.week5}
+                      </div>
+                    </th> -->
+                    <!-- <th class="slds-size_1-of-10 countclass" scope="col">
+                      <div class="slds-truncate" >
+                        {weeklyCount.total}
+                      </div>
+                    </th> -->
+                  </tr>
+                  <tr class="">
+                    <th class="slds-size_3-of-10" scope="col">
+                      <div class="slds-truncate" >Account</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col">
+                      <div class="slds-truncate" >Doctor</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col">
+                      <div class="slds-truncate" >Product Family</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col">
+                      <div class="slds-truncate" >Product Name</div>
+                    </th>
+                    <!-- <th class="slds-size_3-of-10" scope="col">
+                      <div class="slds-truncate" >TSM</div>
+                    </th> -->
+
+                    <th class="slds-size_3-of-10" scope="col">
+                      <div class="slds-truncate" >1st to 7th</div>
+                    </th>
+                    <th class="slds-size_1-of-10" scope="col">
+                      <div class="slds-truncate" >1st to 14th</div>
+                    </th>
+                    <th class="slds-size_1-of-10" scope="col">
+                      <div class="slds-truncate" >1st to 21st</div>
+                    </th>
+                    <th class="slds-size_1-of-10" scope="col">
+                      <div class="slds-truncate" >Full Month</div>
+                    </th>
+                    <!-- <th class="slds-size_1-of-10" scope="col">
+                      <div class="slds-truncate" title="Details">Week 5</div>
+                    </th> -->
+                    <!-- <th class="slds-size_1-of-10" scope="col">
+                      <div class="slds-truncate" title="Details">
+                        Month Total
+                      </div>
+                    </th> -->
+                  </tr>
+                </thead>
+                <!-- Data Table Body  -->
+                <tbody>
+                  <template
+                    for:each={myList}
+                    for:item="item"
+                    for:index="indexVar"
+                  >
+                    <tr key={item.key} class="slds-hint-parent">
+                      <!-- Task Category==Picklist -->
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <div>{item.Account__r.Name}</div>
+                      </td>
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <template if:true={item.Doctor__c}>
+                        <div>{item.Doctor__r.Name}</div>
+                        </template>
+                      </td>
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <div>{item.Product_Family__c}</div>
+                      </td>
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <div>{item.Product_Name__c}</div>
+                      </td>
+                      <!-- <td class="slds-size_3-of-10" data-label="Account">
+                        <div>{item.User__r.Name}</div>
+                      </td> -->
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <template if:true={item.Week_1__c}>
+                          {item.Week_1__c}
+                        </template>
+                        <template if:false={item.Week_1__c}> 0 </template>
+                      </td>
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <template if:true={item.Week_2__c}>
+                          {item.Week_2__c}
+                        </template>
+                        <template if:false={item.Week_2__c}> 0 </template>
+                      </td>
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <template if:true={item.Week_3__c}>
+                          {item.Week_3__c}
+                        </template>
+                        <template if:false={item.Week_3__c}> 0 </template>
+                      </td>
+                      <td class="slds-size_3-of-10" data-label="Account">
+                        <template if:true={item.Week_4__c}>
+                          {item.Week_4__c}
+                        </template>
+                        <template if:false={item.Week_4__c}> 0 </template>
+                      </td>
+                      <!-- <td class="slds-size_3-of-10" data-label="Account">
+                        <template if:true={item.Week_5__c}>
+                          {item.Week_5__c}
+                        </template>
+                        <template if:false={item.Week_5__c}> 0 </template>
+                      </td> -->
+                      <!-- <td class="slds-size_3-of-10" data-label="Account">
+                        <div>{item.Month_Total__c}</div>
+                      </td> -->
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </lightning-card>
+        </template>
+        <template if:false={myList.length}>
+          <div
+            class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning slds-m-top_xx-small"
+            role="alert"
+          >
+            <span class="slds-assistive-text">warning</span>
+            <span
+              class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small"
+            >
+            </span>
+            <h2>No Deployments Found !!</h2>
+            <div class="slds-notify__close">
+              <button
+                class="slds-button slds-button_icon slds-button_icon-small"
+              ></button>
+            </div>
+          </div>
+        </template>
+      </template>
+    </article>
+  </div>
+  <template if:true={showSpinner}>
+    <lightning-spinner alternative-text="Loading"></lightning-spinner>
+  </template>
+</template>

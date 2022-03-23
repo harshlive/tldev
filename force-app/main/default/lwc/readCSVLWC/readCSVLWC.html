@@ -1,0 +1,68 @@
+<template>
+  <article class="slds-card">
+    <div class="slds-page-header">
+      <div class="slds-page-header__row">
+        <div class="slds-page-header__col-title">
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <span>
+                <lightning-icon
+                  icon-name="standard:data_streams"
+                  alternative-text="upload"
+                  title="upload"
+                  size="medium"
+                ></lightning-icon>
+                <span class="slds-assistive-text">Upload Monthly Sales </span>
+              </span>
+            </div>
+            <div class="slds-media__body slds-m-top_xx-small">
+              <div class="slds-page-header__name">
+                <div class="slds-page-header__name-title">
+                  <h1>
+                    <span
+                      class="slds-page-header__title slds-truncate"
+                      title="Upload Monthly Sales"
+                      >Upload Monthly Sales</span
+                    >
+                  </h1>
+                </div>
+              </div>
+              <center style="width: 50%">
+                <p class="slds-page-header__name-meta">•• Upload CSV File ••</p>
+              </center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-left: 3%">
+      <lightning-combobox
+        name="docTypeSelector"
+        label="Select Type of Upload"
+        value={docTypeValue}
+        placeholder="Select Type of Upload"
+        options={docTypeOptions}
+        onchange={handleDocTypeChange}
+      ></lightning-combobox>
+
+      <lightning-file-upload
+        accept={acceptedFormats}
+        label="Attach CSV file"
+        multiple="multiple"
+        onuploadfinished={handleUploadFinished}
+        record-id={recordId}
+      ></lightning-file-upload>
+    </div>
+
+    <div if:true={error}>{error}</div>
+    <br />
+
+    <!-- <div if:true={data}>
+            <lightning-datatable columns={columns} 
+                                 data={data} 
+                                 hide-checkbox-column="true" 
+                                 key-field="id"></lightning-datatable>
+        </div> -->
+  </article>
+</template>

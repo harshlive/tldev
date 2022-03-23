@@ -1,0 +1,220 @@
+<template>
+    
+    <template if:true={myList}>
+<lightning-card title="Outcomes" icon-name="standard:outcome">
+    
+    <!-- <lightning-button-icon icon-name="utility:add" slot="actions" onclick={openModal}></lightning-button-icon> -->
+     
+    
+    <lightning-button if:true={isEdited}
+        label={toggleSaveLabel} 
+        icon-name="utility:save" 
+        slot="actions"
+        onclick={handleOutcomeSave}>
+    </lightning-button> 
+    <lightning-button if:true={isEdited}
+        label="Cancel" 
+        icon-name="utility:clear" 
+        slot="actions"
+        onclick={handleCancel}>
+    </lightning-button>
+   
+    <!-- Custom Table For Tas-->
+    <div class="slds-p-around_x-small" style="overflow-y:visible" data-id="myListTable"  if:true={myList}>
+        <table  data-id="myTable" class="slds-table slds-table_col-bordered slds-table--bordered ">
+            <!-- Date Table Heading -->
+            <thead>
+                <tr class="">
+                    <th if:true={formFactorSmall}  class="slds-size_1-of-10" scope="col">
+                        <div class="slds-truncate" title="Priority">Show Tasks</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col">
+                        <div class="slds-truncate" title="#">#</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col">
+                        <div class="slds-truncate" title="Outcome">Outcome</div>
+                    </th>
+                    
+                    <th class="slds-size_3-of-10" scope="col">
+                        <div class="slds-truncate" title="Deadline">Deadline</div>
+                    </th>
+                    <th class="slds-size_1-of-10" scope="col">
+                        <div class="slds-truncate" title="Actual Completion Date">Actual Completion Date</div>
+                    </th>                                                        
+                    <th class="slds-size_1-of-10" scope="col">
+                        <div class="slds-truncate" title="Status">Status</div>
+                    </th>
+                    <!-- <th if:true={showDelete} class="slds-size_1-of-10" scope="col">
+                        <div class="slds-truncate" title="Delete">Delete</div>
+                    </th> -->
+                    <th if:false={formFactorSmall}  class="slds-size_1-of-10" scope="col">
+                        <div class="slds-truncate" title="Show Tasks">Show Tasks</div>
+                    </th>
+                     
+                </tr>
+            </thead>
+            <!-- Data Table Body  -->
+            <tbody>
+                <template for:each = {myList} for:item = "item" for:index="indexVar">
+                <tr key={item.key} class="slds-hint-parent" ondblclick={onDoubleClickEdit}>
+                   
+                    <td  if:true={formFactorSmall} class="slds-size_1-of-10" data-label="Show Tasks" data-id={item.Id}>
+                        <a name={indexVar} data-id={item.Id} onclick={showOutTasks}>
+                                <lightning-icon icon-name="utility:task" alternative-text="Tasks"  size="small"></lightning-icon>
+                        </a>
+                    </td>
+                    
+                    <!-- Subject==Reference to Lookup Milestone -->
+                    <td class="slds-size_3-of-10" data-label="#">
+                        <div  title="#">
+                            <template if:false={isEdited}>
+                                <template if:false={isEdited}>{item.Outcome_Number_New__c}</template>    
+                            </template>
+                            <template if:true={isEdited}>
+                                <template if:true={isEdited}>{item.Outcome_Number_New__c}</template>    
+                            </template>                                 
+                        </div>
+                    </td>
+                    <!-- Due Date ==DONE -->
+                    <td class="slds-size_3-of-10 slds-col--padded" data-label="Outcome">
+                        <div  title="Outcome">
+                            <template if:false={isEdited}>{item.Description__c}</template>
+                            <template if:true={isEdited}>
+                                <lightning-textarea key={item.key} data-id={item.Id} name="input1"  variant="label-hidden" 
+                                label="Description" value={item.Description__c} onchange={handleDescription}  required></lightning-textarea>
+        
+                                 <!-- <lightning-input key={item.key} data-id={item.Id} name="input1"  label="Description" 
+                                value={item.Description__c} variant="label-hidden" onchange={handleDescription}></lightning-input>  -->
+                            </template>
+                        </div>
+                    </td>
+                    
+                    <!-- Task Category==Picklist -->
+                    <td class="slds-size_3-of-10" data-label="Due Date">
+                        <div  title="Due Date">
+                            <template if:false={isEdited} > 
+                                <template if:false={isEdited}>
+                                    <lightning-formatted-date-time value={item.Due_Date__c} day= "2-digit"   month= "short"   year= "numeric" ></lightning-formatted-date-time></p>
+    
+                                </template>
+                                    </template>
+                                    
+                                    <template if:true={isEdited}>
+                                        <lightning-input key={item.key} data-id={item.Id}  type="date" name="input1"   label="Due Date" 
+                                        value={item.Due_Date__c} variant="label-hidden" onchange={handleDueDate}></lightning-input> 
+                                       
+                                    </template>
+                        </div>
+                    </td>
+                    <!-- Task Status==Picklist -->
+                    <td class="slds-size_3-of-10" data-label="Actual Completion Date">
+                        <div  title="Actual Completion Date">
+                            <template if:false={isEdited} > 
+                                <template if:false={isEdited}>
+                                    <lightning-formatted-date-time value={item.Completion_Date__c} day= "2-digit"   month= "short"   year= "numeric" ></lightning-formatted-date-time></p>
+    
+                                </template>
+                                    </template>
+                                    
+                            <template if:true={isEdited}>
+                                <lightning-input key={item.key} data-id={item.Id} name="input1"   type="date" label="Actual Completion Date" 
+                                value={item.Completion_Date__c} variant="label-hidden" onchange={handleCompletionDate}></lightning-input> 
+                               
+                            </template>
+                        </div>
+                    </td>
+                    <!-- Task Priority  -->
+                    <td class="slds-size_3-of-10" data-label="Status">
+                        <div title="Status">
+                            <template if:false={isEdited}>{item.Status__c}</template>
+                            <template if:true={isEdited}>
+                                <c-outcome-status-picklist 
+                                    unique-key={item.Id} 
+                                    object-api-name="Outcome__c" 
+                                    record-type-id={item.id} 
+                                    selected-value={item.Status__c}  
+                                    pick-listfield-api-name="Status__c" 
+                                    variant="label-hidden"
+                                    onpicklistchange={handleStatusChange}>
+                                </c-outcome-status-picklist>
+                            </template>                               
+                        </div>
+                    </td>
+                     
+                    <!-- <td if:true={showDelete} class="slds-size_1-of-10" data-label="Delete Task">
+                        <a name={indexVar} data-id={item.Id} onclick={remove}>
+                                <lightning-icon icon-name="utility:delete" alternative-text="delete"  size="small"></lightning-icon>
+                        </a>
+                    </td> -->
+                    <td  if:false={formFactorSmall} class="slds-size_1-of-10" data-label="Show Task" data-id={item.Id}>
+                        
+                        <a name={indexVar} data-id={item.Id} onclick={showOutTasks}>
+                                <lightning-icon icon-name="utility:task" alternative-text="Tasks"  size="small"></lightning-icon>
+                        </a>
+                    </td>
+                </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</lightning-card>
+
+<p>&nbsp;</p>
+<div if:true={showTask}>
+    <c-show-tasks-tile  outcome-id={outcomeId} acc-id={accId}></c-show-tasks-tile>
+</div>
+</template>
+<template if:true={isModalOpen}>
+    <!-- Modal/Popup Box LWC starts here -->
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- Modal/Popup Box LWC header here -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create New Outcome</h2>
+            </header>
+            <!-- Modal/Popup Box LWC body starts here -->                
+             <div if:true={isModalOpen} class="slds-modal__content slds-p-around_large">
+                <lightning-combobox
+                name="outcome"
+                label="Outcome"
+                value=""
+                placeholder="Select Outcome"
+                options={outcomeOptions}
+                onchange={addOutcomeOptionsChange}
+                required></lightning-combobox> 
+
+                <!-- <lightning-input label="Outcome" onchange={descripitionChange} required></lightning-input>
+                -->
+                <lightning-combobox
+                        name="status"
+                        label="Status"
+                        value=""
+                        placeholder="Select Status"
+                        options={statusOptions}
+                        onchange={addStatusChange}
+                        required></lightning-combobox>  
+                 
+                <lightning-input label="Deadline" onchange={dueDateChange} type="date" required></lightning-input>
+                <lightning-input label="Completion Date" onchange={completionDateChange} type="date"></lightning-input>
+                                                          
+             </div>
+            
+            <!-- Modal/Popup Box LWC footer starts here -->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={handleinsert} 
+                title="Save">Save</button>
+                <button class="slds-button slds-button_brand" onclick={closeModal} 
+                title="Cancel">Cancel</button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template> 
+</template>

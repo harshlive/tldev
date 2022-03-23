@@ -1,0 +1,92 @@
+<template>
+    <div class="slds-box">
+    <article class="slds-card">
+
+        
+        <div class="slds-grid slds-gutters slds-p-around_small slds-wrap">
+           
+            <div class="slds-col slds-p-top_xx-small slds-size_1-of-1 slds-large-size_3-of-12">
+                <c-multi-select-look-up 
+                    label-name="Search Product"
+                    object-api-name= "Product2"
+                    field-api-names="Id,Name"
+                    filter-field-api-name="Name"
+                    icon-name="standard:product"
+                    onretrieve={selectItemEventHandler} 
+                    onremove={deleteItemEventHandler}>
+                </c-multi-select-look-up >
+            </div>
+            
+            <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12">
+                <lightning-combobox
+                        name="fiscal_year"
+                        label="Enter Fiscal Year"
+                        value={fiscalYear}
+                        placeholder="Select FY"
+                        options={fyOptions}
+                        onchange={fyInputChange} >
+        </lightning-combobox>
+
+            </div>
+            <div class="slds-col slds-p-top_large slds-size_1-of-1 slds-large-size_3-of-12">
+                <center>
+                <lightning-button variant="brand" label="Fetch Data" title="Fetch Data" onclick={fetchTargets} class="slds-m-left_x-small"></lightning-button>
+            </center>
+            </div>
+            <!-- Added boolean to remove edit target feature -->
+            <template if:true={disableEditTargets}>
+            <div class="slds-col slds-p-top_large slds-size_1-of-1 slds-large-size_3-of-12">
+                <template if:true={isEditBtnEnabled}>
+                    <center>
+                <lightning-button 
+                        variant="brand" 
+                        label="Edit Targets" 
+                        title="Edit Targets" 
+                        onclick={editsavecancelTargets} 
+                        class="slds-m-left_x-small">
+            </lightning-button>
+            </center>
+        </template>
+        <template if:true={enableSaveCancel}>
+            <div class="slds-grid slds-gutters slds-wrap">
+                <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                    <center>
+                    <lightning-button 
+                        variant="brand" 
+                        label="Save" 
+                        title="Edit Targets" 
+                        onclick={editsavecancelTargets} 
+                        class="slds-m-left_x-small">
+                    </lightning-button>
+                </center>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                <center>
+                <lightning-button 
+                        variant="brand" 
+                        label="Cancel" 
+                        title="Edit Targets" 
+                        onclick={editsavecancelTargets} 
+                        class="slds-m-left_x-small">
+                    </lightning-button>
+                </center>
+                </div>
+            </div>
+        </template>
+            </div>
+        </template>
+        </div>
+                    <template if:true={showMetrics}>
+                        <c-metric-rows 
+                                metrics-lst={metricsLst} 
+                                account-id={recordId}
+                                fiscal-year={fiscalYear}
+                                onsavetarget={fetchTargets}
+                                onenablesave={enableSave}></c-metric-rows>
+                    </template>
+                    <template if:true={showSpinner}>
+                        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                    </template>
+                      </article>
+                    </div>
+</template>

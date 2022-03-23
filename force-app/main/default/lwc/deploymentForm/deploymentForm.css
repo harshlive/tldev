@@ -1,0 +1,8 @@
+.dummy{
+	color : black;
+}
+
+.required:before {
+    content:" *";
+    color: red;
+  }

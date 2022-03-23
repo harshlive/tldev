@@ -1,0 +1,338 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 10-29-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+	<article class="slds-card">
+		<div class="slds-page-header">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__figure">
+							<span >
+                                    <lightning-icon icon-name="standard:shift_template" alternative-text="target" title="target" size="large"></lightning-icon>
+                                <span class="slds-assistive-text">Account Planning
+                                </span>
+							</span>
+						</div>
+						<div class="slds-media__body slds-m-top_xx-small">
+							<div class="slds-page-header__name">
+								<div class="slds-page-header__name-title">
+									<h1>
+										<span class="slds-page-header__title slds-truncate" title="WEEKLY PLANNING"><b>Account Planning</b></span>
+									</h1>
+								</div>
+							</div>
+							<p class="slds-page-header__name-meta">
+								<!--•• Add Your Daily Tasks ••-->
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<template if:true={myTaskList}>
+			<lightning-card>
+				<!--lightning-button-icon
+				icon-name="utility:add"
+				slot="actions
+				onclick={openModal}
+			></lightning-button-icon-->
+				&nbsp;
+				<lightning-button if:true={isEdited} label={toggleSaveLabel} icon-name="utility:save" slot="actions"
+					onclick={handleSave}>
+				</lightning-button>
+				<lightning-button if:true={isEdited} label="Cancel" icon-name="utility:clear" slot="actions"
+					onclick={handleCancel}>
+				</lightning-button>
+
+
+				<div class="slds-p-around_x-small"
+					style="overflow-x: scrollwidth: 98%; height: 100vh;overflow-y: scroll;border: solid 2px gray;"
+					data-id="myTaskListTable" if:true={myTaskList}>
+
+					<table data-id="myTable" class="slds-table slds-table_col-bordered slds-table--bordered"
+						style="width :150%;table-layout: fixed;overflow-x:scroll">
+						<colgroup>
+							<col span="1" style="width: 10%;">
+							<col span="1" style="width: 10%;">
+							<col span="1" style="width: 9%;">
+							<col span="1" style="width: 10%;">
+							<col span="1" style="width: 8%;">
+							<col span="1" style="width: 8%;">
+							<col span="1" style="width: 15%;">
+							<col span="1" style="width: 20%;">
+							<col span="1" style="width: 10%;">
+							<col span="1" style="width: 9%;">
+							<col span="1" style="width: 16%;">
+						</colgroup>
+						<!-- Date Table Heading -->
+						<thead>
+							<tr class="">
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Hospital No">Hospital No</div>
+								</th>
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Name">Name</div>
+								</th>
+
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Critical Account">Critical Account</div>
+								</th>
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Account Dynamics">Account Dynamics</div>
+								</th>
+
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Product Category">Product Category</div>
+								</th>
+								
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Aim in Account">Aim in Account</div>
+								</th>
+
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Critical Success Factor for Aim">Critical Success Factor for Aim</div>
+								</th>
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Action Plan for Account">Action Plan for Account</div>
+								</th>
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Deadline for Action">Deadline for Action</div>
+								</th>
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Is Account at Risk">Is Account at Risk</div>
+								</th>
+								<th class="slds-size_1-of-9" >
+									<div class="slds-truncate" title="Reason for Account being at Risk">Reason for Account being at Risk</div>
+								</th>
+
+							</tr>
+						</thead>
+						<!-- Data Table Body  -->
+						<tbody>
+							<template for:each={myTaskList} for:item="item" for:index="indexVar">
+								<tr key={item.key} class="slds-hint-parent" ondblclick={onDoubleClickEdit}>
+
+										<td class="slds-size_1-of-9" data-label="Hospital_No">
+										<div class="slds-truncate">
+											{item.Account_ID__c}
+										</div>
+									</td>
+									<!-- Task Category==Picklist -->
+									<td class="slds-size_1-of-9" data-label="Name">
+										<div class="slds-truncate">
+											{item.Name}
+										</div>
+									</td>
+
+									<td class="slds-size_1-of-9" data-label="Details">
+										<template if:false={isEdited}>
+											<template if:true={item.Critical_Account__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} checked disabled>
+												</lightning-input>
+											</template>
+											<template if:false={item.Critical_Account__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} disabled>
+												</lightning-input>
+											</template>
+										</template>
+
+										<template if:true={isEdited}>
+											<template if:true={item.Critical_Account__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} checked onchange={handleCriticalAccount}>
+												</lightning-input>
+											</template>
+											<template if:false={item.Critical_Account__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} onchange={handleCriticalAccount}>
+												</lightning-input>
+											</template>
+										</template>
+
+									</td>
+									<td class="slds-size_1-of-9" data-label="Details">
+										<div title="Details" class="slds-truncate">
+											<template if:false={isEdited}>{item.Account_Dynamics__c}</template>
+                                        </div>
+											<template if:true={isEdited}>
+												<lightning-input key={item.key} data-id={item.Id} name="input1"
+													label="Details" value={item.Account_Dynamics__c}
+													variant="label-hidden" onchange={handleAccountDynamicsChangeTask}>
+												</lightning-input>
+											</template>
+										
+									</td>
+
+									<td class="slds-size_1-of-9" data-label="Name">
+										<div class="slds-truncate">
+											<template if:false={isEdited}>
+												<template if:false={isEdited}>{item.Product_Category__c}</template>
+											</template>
+                                        </div>
+											<template if:true={isEdited}>
+												<c-account-product-family-picklist unique-key={item.Id}
+													object-api-name="Account" record-type-id={item.id}
+													selected-value={item.Product_Category__c}
+													pick-listfield-api-name="Product_Category__c" variant="label-hidden"
+													onpicklistchange={handleProductFamily}
+													aria-required="true">
+												</c-account-product-family-picklist>
+											</template>
+										
+									</td>
+
+
+									<td class="slds-size_1-of-9" data-label="Name">
+										<div class="slds-truncate">
+											<template if:false={isEdited}>
+												<template if:false={isEdited}>{item.Aim_in_Account__c}</template>
+											</template>
+                                        </div>
+											<template if:true={isEdited}>
+												<c-account-aim-in-account-picklist unique-key={item.Id}
+													object-api-name="Account" record-type-id={item.id}
+													selected-value={item.Aim_in_Account__c}
+													pick-listfield-api-name="Aim_in_Account__c" variant="label-hidden"
+													onpicklistchange={handleAimInAccount}
+													aria-required="true">
+												</c-account-aim-in-account-picklist>
+											</template>
+										
+									</td>
+
+									<td class="slds-size_1-of-9" data-label="Name">
+										<div class="slds-cell-wrap">
+											<template if:false={isEdited}>
+												<template
+													if:false={isEdited}>{item.Critical_Success_Factor_for_Aim__c}</template>
+											</template>
+										
+
+											<template if:true={isEdited}>
+												<c-account-critical-success-factor-mutli-picklist
+													onvaluechanged={handleCriticalSuccessFactor}
+													unique-key={item.Id}
+													prod-options={item.Critical_Success_Factor_for_Aim__c}
+													>
+												</c-account-critical-success-factor-mutli-picklist>
+											</template>
+										</div>
+										
+									</td>
+									<td class="slds-size_1-of-9" data-label="Details">
+										<div title="Details" class="slds-cell-wrap">
+											<template if:false={isEdited}>{item.Action_Plan_for_account__c}</template>
+                                       
+											<template if:true={isEdited}>
+												<lightning-input key={item.key} data-id={item.Id} name="input1"
+													label="Details" value={item.Action_Plan_for_account__c}
+													variant="label-hidden" onchange={handleActionPlan} >
+												</lightning-input>
+											</template>
+										 </div>
+									</td>
+
+
+
+									<!-- Due Date ==DONE -->
+									<td class="slds-size_1-of-9" data-label="Deadline for Action">
+										<div title="Deadline_for_action__c" class="slds-truncate">
+											<template if:false={isEdited}>
+												<lightning-formatted-date-time value={item.Deadline_for_action__c}
+													year="numeric" month="short" day="2-digit" >
+												</lightning-formatted-date-time>
+											</template>
+                                        </div>
+											<template if:true={isEdited}>
+												<!-- <lightning-input key={item.key} data-id={item.Id} name="input1" type="date" label="Due Date" 
+										value={item.ActivityDate} variant="label-hidden" onchange={handleDateChange}></lightning-input>  -->
+
+												<lightning-input key={item.key} data-id={item.Id} name="input112"
+													type="date" label="Deadline for Action" min={defaultDate}
+													value={item.Deadline_for_action__c} variant="label-hidden"
+													onchange={handleDateChangeTask}>
+												</lightning-input>
+											</template>
+									
+									</td>
+									<!-- <td class="slds-size_1-of-9" data-label="Details">
+							<div title="Details">
+								 <template if:false={isEdited}>{item.Is_Account_at_Risk__c}</template> 
+	                            <lightning-input key={item.key} data-id={item.Id} type="checkbox"  onchange={handleSelectChange}>
+								</lightning-input>
+								<template if:true={isEdited}>
+								<lightning-input
+									key={item.key}
+									data-id={item.Id}
+									name="input1"
+									type="checkbox"
+									label="Details"
+									value={item.Is_Account_at_Risk__c}
+									variant="label-hidden"
+									onchange={handleIsAcctRisk}
+								></lightning-input>
+								</template>
+							</div>
+						 </td> -->
+
+									<td class="slds-size_1-of-9" data-label="Details">
+										<template if:false={isEdited}>
+											<template if:true={item.Is_Account_at_Risk__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} checked disabled>
+												</lightning-input>
+											</template>
+											<template if:false={item.Is_Account_at_Risk__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} disabled>
+												</lightning-input>
+											</template>
+										</template>
+
+										<template if:true={isEdited}>
+											<template if:true={item.Is_Account_at_Risk__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} checked onchange={handleIsAcctRisk}>
+												</lightning-input>
+											</template>
+											<template if:false={item.Is_Account_at_Risk__c}>
+												<lightning-input class="slds-p-left_xx-large" type="checkbox"
+													data-id={item.Id} onchange={handleIsAcctRisk}>
+												</lightning-input>
+											</template>
+										</template>
+
+									</td>
+									<td class="slds-size_1-of-9" data-label="Status">
+									   <div title="Status" class="slds-cell-wrap">
+											<template if:false={isEdited}> {item.Reason_for_account_being_at_risk__c}
+											</template>
+                                       
+										<template if:true={isEdited}>
+											<c-account-reason-for-risk-multi-pick-List unique-key={item.Id}
+												onvaluechanged={handleReasonforAcct}
+												prod-options={item.Reason_for_account_being_at_risk__c}>
+											</c-account-reason-for-risk-multi-pick-List>
+										</template>
+									  </div>
+									</td>
+								</tr>
+							</template>
+						</tbody>
+					</table>
+				</div>
+			</lightning-card>
+		</template>
+
+	</article>
+</template>

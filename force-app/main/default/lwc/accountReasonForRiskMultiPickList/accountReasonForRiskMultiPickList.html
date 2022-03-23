@@ -1,0 +1,71 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 10-29-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="slds-form-element slds-m-top_small">
+        <!-- <label class="slds-form-element__label" for="combobox-unique-id-3">Product</label> -->
+        <div class="slds-form-element__control">
+            <div class="slds-combobox_container">
+                <div class={dropdown} onmouseleave={closeDropDown} data-id="resultBox" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                   
+                   <!--code for input and dropdown icon-->
+                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                        <input type="text" class="slds-input slds-combobox__input slds-combobox__input-value"
+                                placeholder="Select" onclick={openDropdown} value={selectedValue}/>
+                        <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right" title="Down icon">
+                            <lightning-icon icon-name="utility:down" size="xx-small" class="slds-icon-text-default" ></lightning-icon>
+                            <span class="slds-assistive-text">Down icon</span>
+                        </span>            
+                    </div>
+                  
+ 
+      
+                    <div id="listbox-unique-id" role="listbox">
+                        <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-wrap" role="presentation">
+                            <div class="slds-scrollable">
+                                <!-- code to show list of cat -->
+                                <div style="word-wrap: break-word;">
+                                <template for:each={options} for:item="item">  
+                                    <li key = {item.label} role="presentation" class="slds-listbox__item">
+                                         <div  data-id={item.isChecked} data-name={item.label} onclick={selectOption} class={item.class} role="option">
+                                            <span class="slds-media__figure">
+                                                    <lightning-icon icon-name="utility:check" size="xx-small" class="slds-listbox__icon-selected"></lightning-icon>
+                                            </span>
+                                            <span class="slds-media__body">
+                                                    <span class="slds-truncate" style="color:black;" title={item.label}> {item.label}</span>
+                                            </span>
+                                        </div> 
+                                    </li>
+                                </template>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>   
+            </div>
+        </div>
+ 
+        <template for:each={options} for:item="option">   
+            <template if:true={option.isChecked}>
+                <div key={option.label} style="word-wrap: break-word;">
+        <span key={option.label}>
+            <lightning-pill label={option.label} name={option.label} class="slds-m-around_xx-small" onremove={removeRecord}>
+                </lightning-pill>
+            </span>
+        </div>
+        </template>
+        </template>
+       
+    </div>
+    <br/>
+    <!-- <template if:true={selectedListOfValues}>
+        Selected Product Categories : {selectedListOfValues}
+    </template>
+    <template if:false={selectedListOfValues}>
+        No Categories Selected
+    </template> -->
+ </template>

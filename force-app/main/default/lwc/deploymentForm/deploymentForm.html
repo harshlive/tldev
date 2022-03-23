@@ -1,0 +1,158 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-16-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+	<div class="slds-box">
+		<article class="slds-card">
+			<div class="slds-page-header">
+				<div class="slds-page-header__row">
+					<div class="slds-page-header__col-title">
+						<div class="slds-media">
+							<div class="slds-media__figure">
+								<span>
+									<lightning-icon icon-name="standard:metrics" alternative-text="target"
+										title="target" size="small"></lightning-icon>
+									<span class="slds-assistive-text">Secondary Sales Reporting </span>
+								</span>
+							</div>
+							<div class="slds-media__body">
+								<div class="slds-page-header__name">
+									<div class="slds-page-header__name-title">
+										<h1>
+											<span class="slds-page-header__title slds-truncate"
+												title="Target Indexation">Secondary Sales Reporting</span>
+										</h1>
+									</div>
+								</div>
+								<p class="slds-page-header__name-meta"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<lightning-layout multiple-rows>
+				<lightning-layout-item size="4" padding="around-small">
+					<div>
+						<c-daily-reporting-account-lookup label="Select Hospital " obj-name="Account"
+							search-placeholder="Search.." icon-name="standard:account"
+							onlookupselected={handleAccountSelection}>
+						</c-daily-reporting-account-lookup>
+					</div>
+					<br>
+					<div style="color: crimson;padding-right:5px;">
+						Please fill the cumulative deployment data for the period . For Eg – if in Period "1st to 7th" the doctor has deployed 10 stents and in the period "1st to 14th" he has deployed additional 10 stents, the value to be written in the 1st to 14th Period will be 10+10 = 20  
+					</div>
+
+				</lightning-layout-item>
+
+				<lightning-layout-item size="4" padding="around-small">
+					<table>
+						<tr>
+							<td>Year : </td>
+							<td>
+								<lightning-combobox name="year" value={selectedYear} placeholder="Select Year"
+									options={yearOptions} onchange={handleYearChange}>
+								</lightning-combobox>
+							</td>
+						</tr>
+						<tr>
+							<td>Month : </td>
+							<td>
+								<lightning-combobox name="month"  value={selectedMonth}
+									placeholder="Select month" options={monthOptions} onchange={handleMonthChange}>
+								</lightning-combobox>
+							</td>
+						</tr>
+						<tr>
+							<td>Period : </td>
+							<td>
+								<lightning-combobox name="week" label="" value={selectedWeek}
+									placeholder="Select period" options={weekOptions} onchange={handleWeekChange}>
+								</lightning-combobox>
+							</td>
+						</tr>
+
+					</table>
+				</lightning-layout-item>
+
+				<lightning-layout-item size="2" padding="around-small">
+					<div class="slds-align_absolute-center" style="padding-top: 30px;">
+						<lightning-button variant="brand" label="Submit" title="Submit" onclick={submitForm}>
+						</lightning-button>
+					</div>
+				</lightning-layout-item>
+				<lightning-layout-item size="2" padding="around-small">
+					<div class="slds-align_absolute-center" style="padding-top: 30px;">
+						<lightning-button variant="brand" label="Reset" title="Reset" onclick={resetForm}>
+						</lightning-button>
+					</div>
+				</lightning-layout-item>
+			</lightning-layout>
+
+			<br>
+			<br>
+
+			<!-- Table -->
+			<lightning-layout multiple-rows>
+				<template if:true={allListData.length}>
+					<template for:each={allListData} for:item="doc" for:index="indexChild">
+						<div class="" key={doc.Id}>
+							<lightning-layout-item key={doc.Id} size="3" padding="around-small">
+
+								<div class="  slds-align_absolute-center  " style = "background: #409cff;color: white;font-size: large;  text-transform: uppercase;width:130%"> <b>
+									Doctor Name : {doc.Name}</b>
+								</div>
+							</lightning-layout-item>
+							<lightning-layout-item class="slds-text-body_small" key={doc.Id} size="9"
+								padding="around-small">
+								<c-deployment-table week-name={selectedWeek} value-data={doc.value}>
+								</c-deployment-table>
+							</lightning-layout-item>
+
+						</div>
+					</template>
+
+
+				</template>
+
+				<template if:false={allListData.length}>
+					<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning slds-m-top_xx-small"
+						role="alert">
+						<span class="slds-assistive-text">warning</span>
+						<span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small"
+							title="Description of icon when needed">
+						</span>
+						<h2>{errMessage} !!</h2>
+						<div class="slds-notify__close">
+							<button class="slds-button slds-button_icon slds-button_icon-small" title="Close"></button>
+						</div>
+					</div>
+
+
+				</template>
+			</lightning-layout>
+			<template if:true={showVaDep}>
+				<c-deployment-form-va acc-id={selectedAccount} week-name={selectedWeek} selected-year={selectedYear}
+					selected-month={selectedMonth}></c-deployment-form-va>
+			</template>
+
+			<div if:true={showVaDep} class="slds-align_absolute-center slds-m-around_small">
+				<lightning-button variant="brand" label="Save Form" title="Save Form" onclick={saveRecords} disabled = {disableSave}>
+				</lightning-button>
+				<br>
+			</div>
+
+
+		</article>
+	</div>
+
+	<div>
+		<lightning-spinner if:true={showSpinner} variant="brand" alternative-text="Loading" size="small">
+		</lightning-spinner>
+	</div>
+</template>

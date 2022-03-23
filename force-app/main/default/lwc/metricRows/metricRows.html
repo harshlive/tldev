@@ -1,0 +1,220 @@
+<template>
+    <div class = "slds-p-around_small slds-p-around_small mobileTable">
+
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered ">
+            <thead>
+             <tr class="slds-line-height_reset">
+              <th class="" scope="col">
+               <div class="slds-truncate" title="">Product Name</div>
+              </th>
+              <th class="" scope="col">
+               <div class="slds-truncate" title="">Metrics Type</div>
+              </th>
+              <th class="" scope="col">
+               <div class="slds-truncate" title="">APR</div>
+              </th>
+              <th class="" scope="col">
+                <div class="slds-truncate" title="">MAY</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">JUN</div>
+               </th>
+               <th class="" scope="col" style="background-color: rgb(113, 177, 41);">
+                <div class="slds-truncate" title="">Q1</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">JUL</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">AUG</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">SEP</div>
+               </th>
+               <th class="" scope="col" style="background-color: rgb(113, 177, 41);">
+                <div class="slds-truncate" title="">Q2</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">OCT</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">NOV</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">DEC</div>
+               </th>
+               <th class="" scope="col" style="background-color: rgb(113, 177, 41);">
+                <div class="slds-truncate" title="">Q3</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">JAN</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">FEB</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="">MAR</div>
+               </th>
+               <th class="" scope="col" style="background-color: rgb(113, 177, 41);">
+                <div class="slds-truncate" title="">Q4</div>
+               </th>
+             </tr>
+            </thead>
+            <tbody>
+                <template if:true={metricArray}>
+                    <template for:each={metricArray} for:item="mproduct">
+                        <tr key={mproduct.product} class="slds-hint-parent">
+                            <td data-label="product" rowspan={mproduct.rowspan} class="mobilebg">
+                             {mproduct.product}
+                            </td>
+                           </tr>
+                           <template for:each={mproduct.metricsObjs} for:item="metricRow">
+                               <template if:true={metricRow.metric}>
+                            <tr key={metricRow.type}>
+                             <td key={metricRow.type} data-label="family">
+                              {metricRow.type}
+                             </td>
+                             <td key={metricRow.metric.APR__c} data-label="family">
+                                 <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m1" variant="label-hidden" value={metricRow.metric.APR__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.APR__c}
+                                </template>
+                             </td>
+                             <td key={metricRow.metric.MAY__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m2" variant="label-hidden" value={metricRow.metric.MAY__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.MAY__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.JUN__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m3" variant="label-hidden" value={metricRow.metric.JUN__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.JUN__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.Q1__c} data-label="family" style="background-color: rgb(113, 177, 41);">
+                                <!-- <template if:true={metricRow.isEditable}>
+                                    <lightning-input type="number" step="any" name="q1" variant="label-hidden" value={metricRow.metric.Q1__c}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}> -->
+                                    {metricRow.metric.Q1__c}
+                                <!-- </template> -->
+                               </td>
+                               <td key={metricRow.metric.JUL__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m4" variant="label-hidden" value={metricRow.metric.JUL__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.JUL__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.AUG__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m5" variant="label-hidden" value={metricRow.metric.AUG__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.AUG__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.SEP__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m6" variant="label-hidden" value={metricRow.metric.SEP__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.SEP__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.Q2__c} data-label="family" style="background-color: rgb(113, 177, 41);">
+                                <!-- <template if:true={metricRow.isEditable}>
+                                    <lightning-input type="number" step="any" name="input2" variant="label-hidden" value={metricRow.metric.Q2__c}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}> -->
+                                    {metricRow.metric.Q2__c}
+                                <!-- </template> -->
+                               </td>
+                               <td key={metricRow.metric.OCT__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m7" variant="label-hidden" value={metricRow.metric.OCT__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.OCT__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.NOV__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m8" variant="label-hidden" value={metricRow.metric.NOV__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.NOV__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.DEC__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m9" variant="label-hidden" value={metricRow.metric.DEC__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.DEC__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.Q3__c} data-label="family" style="background-color: rgb(113, 177, 41);">
+                                <!-- <template if:true={metricRow.isEditable}>
+                                    <lightning-input type="number" step="any" name="input2" variant="label-hidden" value={metricRow.metric.Q3__c}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}> -->
+                                    {metricRow.metric.Q3__c}
+                                <!-- </template> -->
+                               </td>
+                               <td key={metricRow.metric.JAN__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m10" variant="label-hidden" value={metricRow.metric.JAN__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.JAN__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.FEB__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m11" variant="label-hidden" value={metricRow.metric.FEB__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.FEB__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.MAR__c} data-label="family">
+                                <template if:true={metricRow.isEditable}>
+                                    <lightning-input data-id={metricRow.metric.Id} type="number" step="any" name="m12" variant="label-hidden" value={metricRow.metric.MAR__c} onblur={handleTargetChange}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}>
+                                    {metricRow.metric.MAR__c}
+                                </template>
+                               </td>
+                               <td key={metricRow.metric.Q4__c} data-label="family" style="background-color: rgb(113, 177, 41);">
+                                <!-- <template if:true={metricRow.isEditable}>
+                                    <lightning-input type="number" step="any" name="input2" variant="label-hidden" value={metricRow.metric.Q4__c}></lightning-input>
+                                 </template>
+                                 <template if:false={metricRow.isEditable}> -->
+                                    {metricRow.metric.Q4__c}
+                                <!-- </template> -->
+                               </td>
+                    
+                            </tr>
+                                </template>
+                           </template>
+                    </template>
+                </template>
+            </tbody>
+            </table>  
+
+            <!-- <template if:true={showSaveButton}>   
+            <div class="slds-col slds-p-top_large">
+                <lightning-button variant="brand" label="Save Target" title="Save Target" onclick={saveTargets} class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </template> -->
+    </div>
+</template>

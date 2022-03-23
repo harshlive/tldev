@@ -1,0 +1,711 @@
+<template>
+	<article class="slds-card"> 
+		<div class="slds-page-header">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__figure">
+							<span >
+                                    <lightning-icon icon-name="standard:shift_template" alternative-text="target" title="target" size="large"></lightning-icon>
+                                <span class="slds-assistive-text">WEEKLY PLANNING
+                                </span>
+							</span>
+						</div>
+						<div class="slds-media__body slds-m-top_xx-small">
+							<div class="slds-page-header__name">
+								<div class="slds-page-header__name-title">
+									<h1>
+										<span class="slds-page-header__title slds-truncate" title="WEEKLY PLANNING"><b>WEEKLY PLANNING</b></span>
+									</h1>
+								</div>
+							</div>
+							<p class="slds-page-header__name-meta">
+								<!--•• Add Your Daily Tasks ••-->
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<lightning-card>
+			<div class="slds-section slds-is-open slds-m-right_x-small slds-m-left_x-small in-field-section">
+				<h3 class="slds-section__title slds-theme_shade hoverClass" style="cursor: pointer;">
+					<span class="slds-truncate slds-p-horizontal_small" title="Section Title"><b>SEARCH FOR ACCOUNT</b></span>
+				</h3>
+
+				<div aria-hidden="false" class="slds-section__content slds-m-right_x-small slds-m-left_x-small">
+					<div class="slds-grid slds-gutters slds-m-right_x-small slds-m-left_x-small slds-wrap">
+
+						<div class="slds-col slds-p-top_xx-small slds-size_1-of-1 slds-large-size_2-of-12">
+							<c-daily-reporting-account-lookup label="Select Hospital" obj-name="Account"
+								search-placeholder="Search.." icon-name="standard:account"
+								onlookupselected={handleAccountSelection}>
+							</c-daily-reporting-account-lookup>
+						</div>
+						<div class="slds-col slds-size_1-of-1 slds-large-size_10-of-12" style="margin-top: 3px;">
+							<template if:true={showAccDetail}>
+								<template if:true={account}>
+									<div class="slds-m-right_xx-large" style="overflow-y:visible"
+										data-id="accountDetailTable" if:true={account}>
+										<table data-id="accountTable"
+											class="slds-table slds-table--bordered slds-table_col-bordered slds-border_left slds-border_right">
+											<!-- Date Table Heading -->
+											<thead>
+												<tr class="">
+
+													<th class="slds-size_1-of-10" scope="col">
+														<div class="slds-truncate slds-cell-wrap" title="Account status" style="width:65px;">Account status
+															(Active/Inactive)</div>
+													</th>
+													<th class="slds-size_1-of-10" scope="col">
+														<div class="slds-truncate  slds-cell-wrap" title="Critical Account" >Critical
+															Account</div>
+													</th>
+													<th class="slds-size_3-of-10" scope="col">
+														<div class="slds-truncate  slds-cell-wrap" title="Aim in Account">Aim in Account
+														</div>
+													</th>
+													<th class="slds-size_3-of-10" scope="col" >
+														<div class="slds-truncate" title="Critical Success Factor">
+															Critical Success Factor</div>
+													</th>
+													<th class="slds-size_3-of-10" scope="col">
+														<div class="slds-truncate" style="width: 233px;" title="Action Plan">Action Plan</div>
+													</th>
+													<th class="slds-size_1-of-10" scope="col">
+														<div class="slds-truncate" title="Deadline for activity">
+															Deadline for activity</div>
+													</th>
+												</tr>
+											</thead>
+											<!-- Data Table Body  -->
+											<tbody>
+												<template for:each={account} for:item="item" for:index="indexVar">
+													<tr key={item.key} class="slds-hint-parent">
+														<!-- Contact To ==DONE -->
+														<td class="slds-size_3-of-10" data-label="Contact">
+															<div title="Contact">
+																<template
+																	if:true={item.Status__c}>{item.Status__c}</template>
+															</div>
+														</td>
+														<!-- Contact Title -->
+														<td>
+															<div style="margin-left:-27px">
+																<template if:true={item.Critical_Account__c}>
+																	<lightning-input class="slds-p-left_xx-large"
+																		type="checkbox" data-id="checkbox" checked disabled>
+																	</lightning-input>
+																</template>
+																<template if:false={item.Critical_Account__c}>
+																	<lightning-input class="slds-p-left_xx-large"
+																		type="checkbox" data-id="checkbox" disabled>
+																	</lightning-input>
+																</template>
+															</div>
+														</td>
+														<td>
+															<template if:true={item.Aim_in_Account__c}>
+																{item.Aim_in_Account__c}
+															</template>
+														</td>
+														<td >
+															<div class="slds-cell-wrap">
+															<template if:true={item.Critical_Success_Factor_for_Aim__c}>
+																{item.Critical_Success_Factor_for_Aim__c}
+															</template>
+															</div>
+														</td>
+														<td >
+															<div class="slds-cell-wrap">
+															<template if:true={item.Action_Plan_for_account__c}>
+																{item.Action_Plan_for_account__c}
+															</template>
+															</div>
+														</td>
+														<td>
+															<template if:true={item.Deadline_for_action__c}>
+        														<lightning-formatted-date-time value={item.Deadline_for_action__c} year="numeric" month="numeric" day="2-digit" weekday="long"></lightning-formatted-date-time>
+															</template>
+														</td>
+
+													</tr>
+												</template>
+											</tbody>
+										</table>
+									</div>
+								</template>
+							</template>
+						</div>
+					</div>
+				</div>
+				<br>
+				<template if:true={showAccDetail}>
+					<div class="slds-row slds-p-left_x-large">
+						<lightning-button variant="brand" label="Show Contacts" title="Show Contacts"
+							onclick={showTaskTable}>
+						</lightning-button>
+					</div>
+				</template>
+
+			</div>
+		</lightning-card>
+
+
+
+
+		<template if:true={showTable}>
+			<!-- Task Table -->
+			<template if:true={myList}>
+				<!-- Custom Table For Task -->
+				<div>
+					<!-- <lightning-formatted-rich-text value="&lt;h2>&nbsp;&nbsp;Daily Activity Details&lt;/h2>">
+                            </lightning-formatted-rich-text> -->
+				</div>
+				<div class="slds-p-around_x-small " style="overflow-y:visible" data-id="myListTable" if:true={myList}>
+					<table data-id="myTable"
+						class="slds-table slds-table--bordered slds-table_col-bordered slds-border_left slds-border_right">
+						<!-- Date Table Heading -->
+						<thead>
+							<tr class="">
+								<th class="slds-size_1-of-10" scope="col">
+									<div class="slds-truncate" title="Contact">Select</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Contact">Contact Name</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Date of Task">Date of Task</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Type of Task">Type of Task</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Product">Product</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Status">Status</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Objective of Task">Objective of Task</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Priority">Priority</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Support">Support</div>
+								</th>
+								<th class="slds-size_3-of-10" scope="col">
+									<div class="slds-truncate" title="Add">Add</div>
+								</th>
+							</tr>
+						</thead>
+						<!-- Data Table Body  -->
+						<tbody>
+							<template for:each={myList} for:item="item" for:index="indexVar">
+								<tr key={item.uniKey} class="slds-hint-parent">
+									<!-- select -->
+									<td>
+										<lightning-input key={item.uniKey} data-id={item.uniKey} type="checkbox"
+											onchange={handleSelectChange}>
+										</lightning-input>
+									</td>
+									<td class="slds-size_3-of-10" data-label="Contact">
+										<div title="Contact">
+											<template if:true={item.uniKey}>{item.name}</template>
+										</div>
+									</td>
+									<td class="slds-size_3-of-10">
+										<div class="slds-m-bottom_large" style="margin-bottom: 20px;">
+											<lightning-input type="date" name="dateField" data-id={item.uniKey} min={mindate} max={maxdate}
+												onchange={handleDateChange}>
+											</lightning-input>
+										</div>
+									</td>
+									<td class="slds-size_3-of-10" data-label="Category">
+										<div>
+											<c-task-category-picklist unique-key={item.uniKey} object-api-name="Task"
+												record-type-id={item.id} variant="label-hidden"
+												onpicklistchange={handleCategoryChange} >
+											</c-task-category-picklist>
+										</div>
+									</td>
+									<td class="slds-size_3-of-10 slds-cell-wrap" data-label="Product Category">
+										<div style="margin-bottom: -7px;">
+											<c-multi-select-picklist onvaluechanged={handleProductPicklistChange}
+												unique-key={item.uniKey} >
+											</c-multi-select-picklist>
+										</div>
+									</td>
+									<td class="slds-size_3-of-10 slds-cell-wrap" data-label="Status">
+										<div >
+											<!--c-task-status-picklist
+												unique-key={item.Id}
+												object-api-name="Task"
+												record-type-id={item.id}
+												pick-listfield-api-name="Status"
+												variant="label-hidden"
+												onpicklistchange={handleStatusChange}
+											>
+											</c-task-status-picklist-->
+											<div style="margin-bottom:21px">
+												<lightning-combobox data-id={item.uniKey} placeholder="Select Status"
+													options={statusOptions} onchange={handleStatusChange}>
+												</lightning-combobox>
+											</div>
+										</div>
+									</td>
+									<td class="slds-size_3-of-10" data-label="Details">
+										<div>
+											<lightning-input key={item.uniKey} data-id={item.uniKey} label="Details"
+												variant="label-hidden" onchange={handleCommentChange}></lightning-input>
+										</div>
+									</td>
+									<td class="slds-size_3-of-10 slds-align-middle" data-label="Priority">
+										<div style="margin-bottom: 19px;">
+											<lightning-combobox data-id={item.uniKey} placeholder="Select Priority"
+												options={options} onchange={handleChange}>
+											</lightning-combobox>
+										</div>
+									</td>
+									<!-- Support or Joint Working -->
+									<td class="slds-size_3-of-10" data-label="Support">
+										<div>
+											<c-custom-lookup unique-key={item.uniKey} obj-name="User"
+												search-placeholder="Search Users" icon-name="standard:user"
+												onlookupselected={handleSupportSelection}>
+											</c-custom-lookup>
+										</div>
+									</td>
+									<td class="slds-size_3-of-10" data-label="Support">
+										<div>
+											<lightning-button variant="base" data-id={item.uniKey} label="+"
+												title="Looks like a link" onclick={handleClick}
+												class="slds-m-left_x-small"></lightning-button>
+										</div>
+									</td>
+								</tr>
+
+							</template>
+						</tbody>
+					</table>
+				</div>
+			</template>
+			<template if:false={myList.length}>
+				<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning slds-m-top_xx-small"
+					role="alert">
+					<span class="slds-assistive-text">warning</span>
+					<span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Description of icon when needed">
+                              <!-- <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#warning"></use>
+                              </svg> -->
+                            </span>
+					<h2>No Records Found !!
+					</h2>
+					<div class="slds-notify__close">
+						<button class="slds-button slds-button_icon slds-button_icon-small" title="Close">
+                                <!-- <svg class="slds-button__icon" aria-hidden="true">
+                                  <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                                </svg>
+                                <span class="slds-assistive-text">Close</span> -->
+                              </button>
+					</div>
+				</div>
+			</template>
+
+
+			<div class="slds-grid slds-gutters slds-p-around_xx-small slds-wrap">
+				<div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12 slds-m-top_large ">
+					<lightning-button variant="brand" label="Submit" title="Submit" onclick={submitReport} disabled={disableBtn}>
+					</lightning-button>
+
+				</div>
+			</div>
+		</template>
+
+	  <template if:true={myTaskList}>
+			<lightning-card title="Tasks" icon-name="standard:task">
+			<!--lightning-button-icon
+				icon-name="utility:add"
+				slot="actions"
+				onclick={openModal}
+			></lightning-button-icon-->
+			&nbsp;
+			<lightning-button
+				if:true={isEdited}
+				label={toggleSaveLabel}
+				icon-name="utility:save"
+				slot="actions"
+				onclick={handleSave}
+			>
+			</lightning-button>
+			<lightning-button
+				if:true={isEdited}
+				label="Cancel"
+				icon-name="utility:clear"
+				slot="actions"
+				onclick={handleCancel}
+			>
+			</lightning-button>
+			
+
+			<div
+				class="slds-p-around_x-small"
+				style="overflow-y: visible"
+				data-id="myTaskListTable"
+				if:true={myTaskList}
+			>
+				<table
+				data-id="myTable"
+				class="slds-table slds-table_col-bordered slds-table--bordered slds-border_left slds-border_right"
+				>
+				<!-- Date Table Heading -->
+				<thead>
+					<tr class="">
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Type">Type</div>
+					</th>
+
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Due Date">Start Date</div>
+					</th>
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Hospital Name">Hospital Name</div>
+					</th>
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Contact">Contact</div>
+					</th>					
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Status">Status</div>
+					</th>
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Priority">Priority</div>
+					</th>					
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Details">Details</div>
+					</th>
+					<th class="slds-size_1-of-11" scope="col" style={prodWidthStyle}>
+						<div class="slds-truncate" title="Product">Product</div>
+					</th>
+
+					<!--th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Assigned To">Assigned To</div>
+					</th-->
+					<th class="slds-size_1-of-11" scope="col">
+						<div class="slds-truncate" title="Support">Support</div>
+					</th>
+					</tr>
+				</thead>
+				<!-- Data Table Body  -->
+				<tbody>
+					<template for:each={myTaskList} for:item="item" for:index="indexVar">
+					<tr
+						key={item.key}
+						class="slds-hint-parent"
+						ondblclick={onDoubleClickEdit}
+					>
+						<!-- Task Category==Picklist -->
+						<td class="slds-size_1-of-11" data-label="Category">
+						<div>
+							<template if:false={item.isEdited}>
+							<template if:false={item.isEdited}
+								>{item.Category__c}</template
+							>
+							</template>
+
+							<template if:true={item.isEdited}>
+							<c-task-category-picklist
+								unique-key={item.Id}
+								object-api-name="Task"
+								record-type-id={item.id}
+								selected-value={item.Category__c}
+								pick-listfield-api-name="Category__c"
+								variant="label-hidden"
+								onpicklistchange={handleCategoryChangeTask}
+							>
+							</c-task-category-picklist>
+							</template>
+						</div>
+						</td>
+
+						<!-- Due Date ==DONE -->
+						<td class="slds-size_1-of-11" data-label="Due Date">
+						<div title="Due Date">
+							<template if:false={item.isEdited}>
+							<lightning-formatted-date-time
+								value={item.StartDateTime__c}
+								year="numeric"
+								month="short"
+								day="2-digit"
+							>
+							</lightning-formatted-date-time>
+							</template>
+
+							<template if:true={item.isEdited}>
+							<!-- <lightning-input key={item.key} data-id={item.Id} name="input1" type="date" label="Due Date" 
+										value={item.ActivityDate} variant="label-hidden" onchange={handleDateChange}></lightning-input>  -->
+
+							<lightning-input
+								key={item.key}
+								data-id={item.Id}
+								name="input112"
+								type="date"
+								label="Start Date"
+								value={item.StartDateTime__c}
+								variant="label-hidden" 
+								min={mindate} 
+								max={maxdate}
+								onchange={handleDateChangeTask}
+							>
+							</lightning-input>
+
+							<div data-id={item.Id} class="slds-hide">
+								<!--p class="slds-form-element__help" style="color:red">
+								The date change approval will be sent to manager.
+								</p-->
+								<p class="slds-form-element__help">
+								Enter reason for change
+								</p>
+								<lightning-input
+								key={item.key}
+								style="color: black"
+								data-id={item.Id}
+								name="input1"
+								type="text"
+								label="Due Date"
+								variant="label-hidden"
+								onblur={handleDueDateCommentChange}
+								></lightning-input>
+							</div>
+							</template>
+						</div>
+						</td>
+						<!-- account  -->
+						<td class="slds-size_1-of-11" data-label="Hospital Name">
+							<div title="Hospital Name">
+								<template if:true={item.WhatId}>{item.What.Name}</template>
+
+								<!--template if:true={item.isEdited}>
+								<template if:true={item.WhatId}>
+									<c-custom-lookup
+									unique-key={item.Id}
+									obj-name="Account"
+									selected-name={item.What.Name}
+									filter={filterContactLookup}
+									icon-name="standard:account"
+									>
+									</c-custom-lookup>
+								</template>
+								<template if:false={item.WhatId}>
+									<c-custom-lookup
+									unique-key={item.Id}
+									obj-name="Account"
+									icon-name="standard:account"								>
+									</c-custom-lookup>
+								</template>
+								</template-->
+							</div>
+							</td>
+							<!-- Contact To ==DONE -->
+							<td class="slds-size_1-of-11" data-label="Contact">
+								<div title="Contact">
+									<template if:true={item.WhoId}>{item.Who.Name}</template>
+
+									<!--template if:true={item.isEdited}>
+									<template if:true={item.WhoId}>
+										<c-custom-lookup
+										unique-key={item.Id}
+										obj-name="Contact"
+										selected-name={item.Who.Name}
+										is-value-selected="true"
+										filter={filterContactLookup}
+										search-placeholder="Search Contacts"
+										icon-name="standard:contact"
+										onlookupselected={handleContactSelection}
+										>
+										</c-custom-lookup>
+									</template>
+									<template if:false={item.WhoId}>
+										<c-custom-lookup
+										unique-key={item.Id}
+										obj-name="Contact"
+										filter={filterContactLookup}
+										search-placeholder="Search Contacts"
+										icon-name="standard:contact"
+										onlookupselected={handleContactSelection}
+										>
+										</c-custom-lookup>
+									</template>
+									</template-->
+								</div>
+							</td>						
+						<!-- Task Status==Picklist -->
+						<td class="slds-size_1-of-11" data-label="Status">
+						<div title="Status">
+							<template if:false={item.isEdited}> {item.Status} </template>
+
+							<template if:true={item.isEdited}>
+							<!--c-task-status-picklist
+								unique-key={item.Id}
+								object-api-name="Task"
+								record-type-id={item.id}
+								selected-value={item.Status}
+								pick-listfield-api-name="Status"
+								variant="label-hidden"
+								onpicklistchange={handleStatusChangeTask}
+							>
+							</c-task-status-picklist-->
+							<div style="margin-bottom:21px">
+								<lightning-combobox data-id={item.Id} placeholder="Select Status"
+									options={statusOptions} onchange={handleStatusChangeTask} value={item.Status}>
+								</lightning-combobox>
+							</div>
+							</template>
+						</div>
+						</td>
+						<td class="slds-size_1-of-11" data-label="Priority">
+							<div title="Details">
+								<template if:false={item.isEdited}>{item.Priority}</template>
+								<template if:true={item.isEdited} >
+									<div style="margin-bottom:21px">
+										<lightning-combobox data-id={item.Id} placeholder="Select Priority"
+											options={options} onchange={handleChangeTask} value={item.Priority}>
+										</lightning-combobox>
+									</div>
+								</template>
+							</div>
+						</td>
+						<td class="slds-size_1-of-11" data-label="Details">
+						<div title="Details">
+							<template if:false={item.isEdited}>{item.Comments__c}</template>
+
+							<template if:true={item.isEdited}>
+							<lightning-input
+								key={item.key}
+								data-id={item.Id}
+								name="input1"
+								label="Details"
+								value={item.Comments__c}
+								variant="label-hidden"
+								onchange={handleCommentChangeTask}
+							></lightning-input>
+							</template>
+						</div>
+						</td>
+						<!-- Product -->
+						<td
+						class="slds-size_3-of-10 slds-cell-wrap"
+						data-label="Product"
+						>
+						<div title="Status">
+							<template if:false={item.isEdited}>
+							<template if:false={item.isEdited}
+								>{item.Product2__c}</template
+							>
+							</template>
+
+							<template if:true={item.isEdited}>
+							<!-- <c-daily-reporting-product-picklist
+											unique-key={item.Id} 
+											object-api-name="Task" 
+											record-type-id={item.id} 
+											selected-value={item.Product__c}  
+											pick-listfield-api-name="Product__c" 
+											variant="label-hidden"
+											onpicklistchange={handleProductChange}>
+										</c-daily-reporting-product-picklist> -->
+							<c-multi-select-picklist
+								onvaluechanged={handleProductPicklistChangeTask}
+								unique-key={item.Id}
+								prod-options={item.Product2__c}
+							>
+							</c-multi-select-picklist>
+							</template>
+						</div>
+						</td>
+
+						<!-- Assigned To ==DONE -->
+						<!--td class="slds-size_1-of-11" data-label="Assigned To">
+						<div title="Assigned To">
+							<template if:false={item.isEdited}>
+							<template if:true={item.OwnerId}>
+								{item.Owner.Name}</template
+							></template
+							>
+
+							<template if:true={item.isEdited}>
+							<template if:true={item.OwnerId}>
+								<c-custom-lookup
+								unique-key={item.Id}
+								obj-name="User"
+								selected-name={item.Owner.Name}
+								is-value-selected="true"
+								search-placeholder="Search Users"
+								icon-name="standard:user"
+								onlookupselected={handleUserSelection}
+								>
+								</c-custom-lookup>
+							</template>
+							<template if:false={item.OwnerId}>
+								<c-custom-lookup
+								unique-key={item.Id}
+								obj-name="User"
+								search-placeholder="Search Users"
+								icon-name="standard:user"
+								onlookupselected={handleUserSelection}
+								>
+								</c-custom-lookup>
+							</template>
+							</template>
+						</div>
+						</td-->
+						<td class="slds-size_1-of-11" data-label="Support">
+						<div title="Support">
+							<template if:false={item.isEdited}>
+							<template if:true={item.Support__c}>
+								<template if:true={item.Support__r}>
+								{item.Support__r.Name}
+								</template>
+							</template>
+							</template>
+
+							<template if:true={item.isEdited}>
+							<template if:true={item.Support__r}>
+								<c-custom-lookup
+								unique-key={item.Id}
+								obj-name="User"
+								selected-name={item.Support__r.Name}
+								is-value-selected="true"
+								search-placeholder="Search Users"
+								icon-name="standard:user"
+								onlookupselected={handleSupportSelectionTask}
+								>
+								</c-custom-lookup>
+							</template>
+
+							<template if:false={item.Support__r}>
+								<c-custom-lookup
+								unique-key={item.Id}
+								obj-name="User"
+								search-placeholder="Search Users"
+								icon-name="standard:user"
+								onlookupselected={handleSupportSelectionTask}
+								>
+								</c-custom-lookup>
+							</template>
+							</template>
+						</div>
+						</td>
+
+					</tr>
+					</template>
+				</tbody>
+				</table>
+			</div>
+			</lightning-card>
+		</template>
+
+	</article>
+</template>

@@ -1,0 +1,10 @@
+.countclass {
+  background: repeating-linear-gradient(
+    45deg,
+    rgb(84, 105, 141),
+    rgb(84, 105, 141) 20px,
+    rgba(84, 105, 141, 0.97) 20px,
+    rgba(84, 105, 141, 0.97) 40px
+  );
+  color: white;
+}

@@ -1,0 +1,103 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-04-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+
+    <table class="tg" style="table-layout: fixed; width: 95%">
+        <colgroup>
+            <template for:each={elem.productFamily} for:item="item">
+                <col style="width: 10%" key={elem.productFamily}>
+            </template>
+            <template for:each={elem.productFamily} for:item="item">
+                <col style="width: 10%" key={elem.productFamily}>
+            </template>
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="tg-jzk6" colspan="10">DOCTOR : {elem.docName}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <template for:each={elem.productFamily} for:item="item">
+                    <td class="tg-nro3" colspan="2" key={item.Name}>{item.Name}</td>
+                </template>
+            </tr>
+            <tr>
+                <template for:each={elem.productFamily} for:item="item">
+                    <td key={item.Name} colspan="2">
+                        <template for:each={item.ProductsArray} for:item="prod">
+                            <div key={prod.Name}>
+                                <table  style="table-layout: fixed; width: 95%">
+                                    <tr>
+                                        <td class="tg-43kh" key={prod.Name}>{prod.Name}</td>
+                                        <td class="tg-wddu" key={prod.Name}>
+                                            <lightning-input value={prod.Number} key={prod.Name} type="number"
+                                                style="width: 90%;" onblur={changeQuantity}>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </template>
+                    </td>
+                    <!-- </tr> -->
+                </template>
+            </tr>
+            <!-- <td class="tg-43kh">VIVO ISAR</td>
+            <td class="tg-wddu">0</td>
+            <td class="tg-43kh">IVL</td>
+            <td class="tg-wddu">0</td>
+            <td class="tg-43kh">OPN</td>
+            <td class="tg-wddu">1</td>
+            <td class="tg-43kh">NC</td>
+            <td class="tg-wddu">1</td>
+            <td class="tg-43kh">PBMV</td>
+            <td class="tg-wddu">0</td> -->
+
+            <!-- <tr>
+            <td class="tg-43kh">ELITE</td>
+            <td class="tg-wddu">0</td>
+            <td class="tg-wddu" colspan="2" rowspan="6"></td>
+            <td class="tg-43kh">NIC NANO</td>
+            <td class="tg-wddu">1</td>
+            <td class="tg-43kh">SC</td>
+            <td class="tg-wddu">0</td>
+            <td class="tg-43kh" colspan="2" rowspan="6"></td>
+          </tr>
+          <tr>
+            <td class="tg-43kh">PC</td>
+            <td class="tg-wddu">1</td>
+            <td class="tg-43kh">ID</td>
+            <td class="tg-wddu">0</td>
+            <td class="tg-43kh">RADIEON</td>
+            <td class="tg-wddu">0</td>
+          </tr>
+          <tr>
+            <td class="tg-43kh">FLEX</td>
+            <td class="tg-wddu">0</td>
+            <td class="tg-wddu" colspan="2" rowspan="4"></td>
+            <td class="tg-43kh">ICAZUKI ZERO</td>
+            <td class="tg-wddu">1</td>
+          </tr>
+          <tr>
+            <td class="tg-43kh">ULTIMA PC</td>
+            <td class="tg-wddu">1</td>
+            <td class="tg-43kh" colspan="2" rowspan="3"></td>
+          </tr>
+          <tr>
+            <td class="tg-43kh">RACER CC</td>
+            <td class="tg-wddu">0</td>
+          </tr>
+          <tr>
+            <td class="tg-43kh">PC PLUS</td>
+            <td class="tg-wddu">1</td>
+          </tr> -->
+        </tbody>
+    </table>
+</template>

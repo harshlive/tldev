@@ -1,0 +1,224 @@
+<template>
+    <div class="slds-box">
+        <article class="slds-card">
+
+            <div class="slds-page-header">
+                <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                <div class="slds-media__figure">
+                    <span >
+                        <lightning-icon  icon-name="standard:people" alternative-text="target" title="target" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Account Team Tasks
+                    </span>
+                </span>
+                </div>
+                <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                <div class="slds-page-header__name-title">
+                <h1>
+                <span class="slds-page-header__title slds-truncate" title="Target Indexation">Account Team Tasks</span>
+                </h1>
+                </div>
+                </div>
+                <p class="slds-page-header__name-meta"></p>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+
+
+                <div class="slds-grid slds-gutters slds-p-around_small slds-wrap">
+                    <!-- <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12" >
+                    <lightning-input 
+                            type="date" 
+                            name="dateField" 
+                            label="Date" 
+                            value={defaultDate}
+                            onchange={handleDateChange}>
+                    </lightning-input>
+                    </div> -->
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12">
+                    <lightning-combobox
+                        id="pickList"
+                        name="progress"
+                        label="Select Team Member"
+                        
+                        variant={variant}
+                        placeholder="Select"
+                        options={teamUser}
+                        onchange={handleUserChange}>
+                    </lightning-combobox>  
+                    </div>
+                    <div class="slds-col slds-p-top_large slds-size_1-of-1 slds-large-size_3-of-12">
+                        <lightning-button 
+                        variant="brand" 
+                        label="Show Tasks" 
+                        title="Show Tasks" 
+                        onclick={showTask} >
+                    </lightning-button>
+                    </div> 
+                </div>
+                   
+                     
+              
+
+                <template if:true={myList}>
+                    <template if:true={myList.length}>
+            <lightning-card class="slds-p-left_small" title="Tasks" icon-name="standard:task">
+                
+                
+                <!-- Custom Table For Task -->
+                
+                
+                <div class="slds-p-around_x-small " style="overflow-y:visible;overflow-x:auto"   data-id="myListTable"   if:true={myList}>
+                    <table data-id="myTable" class="slds-table slds-table_col-bordered slds-table--bordered ">
+                        <!-- Date Table Heading -->
+                        <thead>
+                            <tr class="">
+                                <th class="slds-size_3-of-10" scope="col">
+                                    <div class="slds-truncate" title="Type">Type</div>
+                                </th>
+                                <th class="slds-size_1-of-10" scope="col">
+                                    <div class="slds-truncate" title="Contact">Contact</div>
+                                </th>
+                                <!-- <th class="slds-size_1-of-10" scope="col">
+                                    <div class="slds-truncate" title="Milestone">Milestone</div>
+                                </th>
+                                <th class="slds-size_1-of-10" scope="col">
+                                    <div class="slds-truncate" title="Outcome">Outcome</div>
+                                </th> -->
+                                <th class="slds-size_1-of-10" style={prodWidthStyle}>
+                                    <div class="slds-truncate" title="Product">Product</div>
+                                </th>
+                                
+                                <th class="slds-size_3-of-10" scope="col">
+                                    <div class="slds-truncate" title="Start Date">Start Date</div> 
+                                </th>
+                                <th class="slds-size_1-of-10" scope="col">
+                                    <div class="slds-truncate" title="Status">Status</div>
+                                </th>    
+                                <th class="slds-size_1-of-10" scope="col">
+                                    <div class="slds-truncate" title="Details">Details</div>
+                                </th> 
+                                
+                            </tr>
+                        </thead>
+                        <!-- Data Table Body  -->
+                        <tbody>
+                            <template for:each = {myList} for:item = "item" for:index="indexVar">
+                            <tr key={item.key} class="slds-hint-parent" ondblclick={onDoubleClickEdit}>
+                                <!-- Task Category==Picklist -->
+                                <td class="slds-size_3-of-10" data-label="Category">
+                                    <div  >
+                                        <template if:false={isEdited} > 
+                                            <template if:false={isEdited}>{item.Category__c}</template>
+                                                </template> 
+                                    </div>
+                                </td>
+                                 <!-- Contact To ==DONE -->
+                                 <td class="slds-size_3-of-10" data-label="Contact">
+                                    <div title="Contact">
+                                        <template if:false={isEdited}> 
+                                            <template if:true={item.WhoId}>{item.Who.Name}</template>
+                                        </template> 
+                                    </div>
+                                </td>
+                                 <!-- milestone To ==DONE -->
+                                 <!-- <td class="slds-size_3-of-10" data-label="Milestone">
+                                    <div title="Milestone">
+                                        <template if:false={isEdited}> 
+                                            <template if:true={item.Milestone__r}>{item.Milestone__r.Name}</template>
+                                        </template> 
+                                    </div>
+                                </td>
+                                 <td class="slds-size_3-of-10" data-label="outcome">
+                                    <div title="outcome">
+                                        <template if:false={isEdited}> 
+                                            <template if:true={item.Outcome__r}>{item.Outcome__r.Outcome_Name__c}</template>
+                                        </template> 
+                                    </div>
+                                </td> -->
+                                 <!-- Product ==DONE -->
+                                 <td class="slds-size_3-of-10 slds-cell-wrap" data-label="product">
+                                    <div title="product">
+                                        <template if:false={isEdited}> 
+                                            <template if:true={item.Product2__c}>{item.Product2__c}</template>
+                                        </template> 
+                                    </div>
+                                </td>
+                                <!-- Due Date ==DONE -->
+                                <td class="slds-size_3-of-10" data-label="Due Date">
+                                    <div  title="Due Date">
+                                        <template if:false={isEdited}>
+                                            <lightning-formatted-date-time value={item.StartDateTime__c} year="numeric" month="short" day="2-digit" >
+                                                </lightning-formatted-date-time>
+                                        </template> 
+                                    </div>
+                                </td>
+                              <!-- Task Status==Picklist -->
+                              <td class="slds-size_3-of-10" data-label="Status">
+                                <div  title="Status">
+                                    <template if:false={isEdited} > 
+                                        <template if:false={isEdited}>{item.Status}</template>
+                                            </template> 
+                                </div>
+                            </td>
+                               
+                                
+                                
+                                <td class="slds-size_3-of-10" data-label="Details">
+                                    <div  title="Details">
+                                        <template if:false={isEdited}>{item.Comments__c}</template> 
+                                    </div>
+                                </td>
+                                
+                                
+                                 
+                                <!-- <td class="slds-size_3-of-10" data-label="Support">
+                                    <div title="Support">
+                                        <template if:false={isEdited}>
+                                        <template if:true={item.Support__c}>
+                                            <template if:true={item.Support__r}>
+                                                {item.Support__r.Name}
+                                            </template> 
+                                        </template>
+                                        </template> 
+                                    </div>
+                                </td>  -->
+                                </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </lightning-card>
+                </template>
+                <template if:false={myList.length}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning slds-m-top_xx-small" role="alert">
+                        <span class="slds-assistive-text">warning</span>
+                        <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Description of icon when needed">
+                          <!-- <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#warning"></use>
+                          </svg> -->
+                        </span>
+                        <h2>No Tasks Found !!
+                        </h2>
+                        <div class="slds-notify__close">
+                          <button class="slds-button slds-button_icon slds-button_icon-small" title="Close">
+                            <!-- <svg class="slds-button__icon" aria-hidden="true">
+                              <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Close</span> -->
+                          </button>
+                        </div>
+                      </div>
+                </template>
+</template>
+
+</article>
+</div>
+<template if:true={showSpinner}>
+    <lightning-spinner alternative-text="Loading"></lightning-spinner>
+</template>
+</template>

@@ -1,0 +1,24 @@
+<template>
+     
+<div if:true={milestones} >
+    <lightning-card variant="Narrow"  
+    title="Guidance Question Details" icon-name="custom:custom96">
+
+<div  class="slds-p-horizontal_medium">
+    <lightning-record-form record-id={milestoneId} object-api-name="Milestone__c" layout-type="Full"
+     columns="2" mode="View" 
+        onsuccess={handleSuccess} onsubmit={handleSubmit}>
+    </lightning-record-form>
+</div>
+    <br>
+    
+   
+    </lightning-card>
+</div>
+    
+    <p>&nbsp;</p>
+    <div  >
+        <c-show-outcome-tile milestone-id={milestoneId}></c-show-outcome-tile>
+    </div>
+    
+</template>

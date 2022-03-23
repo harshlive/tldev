@@ -1,0 +1,242 @@
+<template>
+    <template if:false={statePickVals.data}>
+        <c-stencil iterations="1" type="feed" columns="1"></c-stencil>
+    </template>
+    <template if:true={statePickVals.data}>
+        <article class="slds-card">
+            <div class="slds-page-header">
+                <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                <div class="slds-media__figure">
+                    <span >
+                        <lightning-icon icon-name="action:new_campaign" alternative-text="target" title="target" size="x-small"></lightning-icon>
+                    <span class="slds-assistive-text">Target Indexation 
+                    </span>
+                </span>
+                </div>
+                <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                <div class="slds-page-header__name-title">
+                <h1>
+                <span class="slds-page-header__title slds-truncate" title="Target Indexation">Target Indexation</span>
+                </h1>
+                </div>
+                </div>
+                <p class="slds-page-header__name-meta">•• Adjust Targets for States ••</p>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+
+        <div class="slds-grid slds-gutters slds-p-around_small slds-wrap">
+            <template if:true={showError}>
+            <div class="slds-col slds-size_1-of-1">
+                <span style="color: crimson;">
+                    {errorMessage}
+                </span>
+            </div>
+            </template>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-combobox
+                        name="state"
+                        label="Enter State"
+                        value={stateVal}
+                        placeholder="Select State"
+                        options={statePickVals.data.values}
+                        onchange={stateInputChange} >
+                </lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-combobox
+                        name="fiscal_year"
+                        label="Enter Fiscal Year"
+                        value={fiscalYear}
+                        placeholder="Select FY"
+                        options={fyOptions}
+                        onchange={fyInputChange} >
+                </lightning-combobox>
+            </div>
+
+            <div class="slds-col slds-p-top_small slds-size_1-of-1">
+                <center>
+                    <lightning-button 
+                        variant="brand" 
+                        label="Get Index" 
+                        title="Get Index" 
+                        onclick={getIndices} 
+                        class="slds-m-left_x-small">
+                    </lightning-button>
+                </center>
+            </div>
+            
+        </div>
+        <template if:true={showSpinner}>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </template>
+        <template if:true={showIndices}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Quarter">
+                                Quarter
+                            </div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Index Percent">
+                                Index Percent
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Quarter" scope="row">
+                            <div class="slds-truncate" title="Q1">
+                                <a href="javascript:void(0);" tabindex="-1">
+                                    Q1
+                                </a>
+                            </div>
+                        </th>
+                        <td data-label="Index Percent">
+                            <div class="slds-truncate" title="Index Percent">
+                                <template if:false={editEnabled}>{currentIndexRecord.Q1_Index__c}</template>
+                                 <template if:true={editEnabled}>
+                                    <lightning-input 
+                                        type="number" 
+                                        name="q1_input" 
+                                        value={currentIndexRecord.Q1_Index__c} 
+                                        label="" 
+                                        variant="label-hidden"
+                                        max="100"
+                                        onblur={handleIndexUpdate}>
+                                    </lightning-input>  
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Quarter" scope="row">
+                            <div class="slds-truncate" title="Q2">
+                                <a href="javascript:void(0);" tabindex="-1">
+                                    Q2
+                                </a>
+                            </div>
+                        </th>
+                        <td data-label="Index Percent">
+                            <div class="slds-truncate" title="Index Percent">
+                                <template if:false={editEnabled}>{currentIndexRecord.Q2_Index__c}</template>
+                                 <template if:true={editEnabled}>
+                                    <lightning-input 
+                                        type="number" 
+                                        name="q2_input" 
+                                        value={currentIndexRecord.Q2_Index__c}
+                                        label="" 
+                                        variant="label-hidden"
+                                        max="100"
+                                        onblur={handleIndexUpdate}>
+                                    </lightning-input>  
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Quarter" scope="row">
+                            <div class="slds-truncate" title="Q3">
+                                <a href="javascript:void(0);" tabindex="-1">
+                                    Q3
+                                </a>
+                            </div>
+                        </th>
+                        <td data-label="Index Percent">
+                            <div class="slds-truncate" title="Index Percent">
+                                <template if:false={editEnabled}>{currentIndexRecord.Q3_Index__c}</template>
+                                 <template if:true={editEnabled}>
+                                    <lightning-input 
+                                        type="number" 
+                                        name="q3_input" 
+                                        value={currentIndexRecord.Q3_Index__c}
+                                        label="" 
+                                        variant="label-hidden"
+                                        max="100"
+                                        onblur={handleIndexUpdate}>
+                                    </lightning-input>  
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Quarter" scope="row">
+                            <div class="slds-truncate" title="Q4">
+                                <a href="javascript:void(0);" tabindex="-1">
+                                    Q4
+                                </a>
+                            </div>
+                        </th>
+                        <td data-label="Index Percent">
+                            <div class="slds-truncate" title="Index Percent">
+                                <template if:false={editEnabled}>{currentIndexRecord.Q4_Index__c}</template>
+                                 <template if:true={editEnabled}>
+                                    <lightning-input 
+                                        type="number" 
+                                        name="q4_input" 
+                                        value={currentIndexRecord.Q4_Index__c}
+                                        label="" 
+                                        variant="label-hidden"
+                                        max="100"
+                                        onblur={handleIndexUpdate}>
+                                    </lightning-input>  
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <template if:true={saveEnabled}>
+            <div class="slds-grid slds-gutters slds-p-around_small slds-wrap">
+                    <div class="slds-col slds-size_1-of-2">
+                    <center>
+                        <lightning-button 
+                        variant="brand" 
+                        label="Save" 
+                        title="Save" 
+                        onclick={handleSave} 
+                        class="slds-m-left_x-small">
+                    </lightning-button>
+                </center>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                <center>
+                    <lightning-button 
+                            variant="brand" 
+                            label="Cancel" 
+                            title="Cancel" 
+                            onclick={cancelSave} 
+                            class="slds-m-left_x-small">
+                        </lightning-button>
+                </center>
+                </div>
+                </div>
+                </template>
+                <template if:false={saveEnabled}>
+                    <div class="slds-grid slds-gutters slds-p-around_small slds-wrap">
+                    <div class="slds-col slds-size_1-of-1">
+                        <center>
+                            <lightning-button 
+                            variant="brand" 
+                            label="Edit" 
+                            title="Edit" 
+                            onclick={enableEdit} 
+                            class="slds-m-left_x-small">
+                        </lightning-button>
+                    </center>
+                    </div>
+                </div>
+                </template>
+        </template>
+    </article>
+    </template>
+       
+</template>

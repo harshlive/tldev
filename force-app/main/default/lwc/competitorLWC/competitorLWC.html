@@ -1,0 +1,249 @@
+<template>
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+    <div class="slds-grid slds-gutters slds-wrap slds-box slds-m-around_small">
+      
+        <template if:true={compPickVals.data}>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-12 slds-m-top_xx-small">
+            <lightning-combobox
+                    name="competitor"
+                    label="Enter Competitor"
+                    value={compVal}
+                    placeholder="Select Competitor"
+                    options={compPickVals.data.values}
+                    onchange={compInputChange} >
+            </lightning-combobox>
+        </div>
+    </template>
+    <div class="slds-col slds-p-top_xx-small slds-size_1-of-1 slds-large-size_3-of-12">
+   
+                            <c-custom-lookup 
+                                    label="Select Product"
+                                    obj-name="Product2" 
+                                    search-placeholder="Search.." 
+                                    icon-name="standard:product" 
+                                    filter ={productLookupFilter}
+                                    onlookupselected={handleProductSelection}> 
+                            </c-custom-lookup>
+    </div>
+    <div class="slds-col slds-p-top_xx-small slds-size_1-of-1 slds-large-size_2-of-12">
+        <lightning-combobox
+        name="fiscal_year"
+        label="Enter Fiscal Year"
+        value={fiscalYear}
+        placeholder="Select FY"
+        options={fyOptions}
+        onchange={fyInputChange} >
+    </lightning-combobox>
+    </div>
+    <div class="slds-col slds-p-top_xx-small slds-size_1-of-1 slds-large-size_2-of-12">
+        <lightning-combobox
+        name="month"
+        label="Enter Month"
+        value={monthVal}
+        placeholder="Select Month"
+        options={monthOptions}
+        onchange={monthInputChange} >
+    </lightning-combobox>
+    </div>
+        <div class="slds-col slds-p-top_large slds-size_1-of-1 slds-large-size_3-of-12">
+            <center>
+                <lightning-button 
+                    variant="brand" 
+                    label="Add/Edit Actual" 
+                    title="Add/Edit Actual" 
+                    onclick={editCompInfo} 
+                    class="slds-m-left_x-small">
+                </lightning-button>
+            </center>
+        </div>
+        </div>
+        <template if:true={showMonthlyData}>
+            <div class="slds-grid slds-wrap slds-box slds-m-around_x-small">
+        <div class="slds-col slds-size_1-of-3">
+                <lightning-input 
+                    type="number" 
+                    name="actualData" 
+                    value={curActualData}
+                    label="Actual Data" 
+                    onblur={enableSave}>
+                </lightning-input>         
+        </div>
+        <div class="slds-col slds-p-top_large slds-size_1-of-3">
+            <center>
+            <lightning-button 
+                variant="brand" 
+                label="Save" 
+                title="Save" 
+                onclick={savecancelactual} 
+                class="slds-m-left_x-small">
+            </lightning-button>
+        </center>    
+        </div>
+            <div class="slds-col slds-p-top_large slds-size_1-of-3">
+            <center>    
+             <lightning-button 
+                variant="brand" 
+                label="Cancel" 
+                title="Cancel" 
+                onclick={savecancelactual} 
+                class="slds-m-left_x-small">
+            </lightning-button> 
+        </center>    
+                </div>      
+    </div>    
+    </template>
+        <div class="slds-grid slds-gutters slds-wrap slds-box slds-m-around_small">
+            <div class="slds-col slds-p-top_xx-small slds-size_1-of-1">
+                <center>
+                <lightning-button 
+                    variant="brand" 
+                    label={dataBtnLabel} 
+                    title={dataBtnLabel} 
+                    onclick={getCompetitorInfo} 
+                    class="slds-m-left_x-small">
+                </lightning-button>
+            </center>
+            </div>
+            <template if:true={showStencil}>
+                <div class="slds-col slds-p-top_xx-small slds-size_1-of-1">
+                <c-stencil iterations="2" type="list" columns="1"></c-stencil>
+                </div>
+            </template>
+            <template if:true={showAllData}>
+            <div class="slds-col slds-p-top_xx-small slds-size_1-of-1">
+    <table class="slds-table slds-table_bordered slds-table_col-bordered">
+        <thead>
+        <tr class="slds-line-height_reset">
+        <th class="" scope="col" >
+        <div class="slds-truncate" title="Competitor Name">Competitor Name</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="Product Name">Product Name</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="APR">APR</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="MAY">MAY</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="JUN">JUN</div>
+        </th>
+        <th class="" scope="col" style="background-color: rgb(224, 153, 60);">
+            <div class="slds-truncate" title="Q1">Q1</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="JUL">JUL</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="AUG">AUG</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="SEP">SEP</div>
+        </th>
+        <th class="" scope="col" style="background-color: rgb(224, 153, 60);">
+            <div class="slds-truncate" title="Q2">Q2</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="OCT">OCT</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="NOV">NOV</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="DEC">DEC</div>
+        </th>
+        <th class="" scope="col" style="background-color: rgb(224, 153, 60);">
+            <div class="slds-truncate" title="Q3">Q3</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="JAN">JAN</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="FEB">FEB</div>
+        </th>
+        <th class="" scope="col">
+            <div class="slds-truncate" title="MAR">MAR</div>
+        </th>
+        <th class="" scope="col" style="background-color: rgb(224, 153, 60);">
+            <div class="slds-truncate" title="Q4">Q4</div>
+        </th>
+        </tr>
+        </thead>
+        <tbody>
+            <template if:true={metricArray}>
+                <template for:each={metricArray} for:item="competitor">
+                    <tr key={competitor} class="slds-hint-parent">
+                        <td data-label="Competitor Name" rowspan={competitor.rowspan} class="mobilebg">
+                         {competitor.competitor}
+                        </td>
+                       </tr>
+                       <template for:each={competitor.products} for:item="metricRow">
+                           <template if:true={metricRow}>
+                        <tr key={metricRow.Product__r.Name}>
+                         <td key={metricRow.Product__r.Name} data-label="family">
+                          {metricRow.Product__r.Name}
+                         </td>
+                         <td key={metricRow.APR__c} data-label="family">
+                                {metricRow.APR__c}
+                         </td>
+                         <td key={metricRow.MAY__c} data-label="family">
+                                {metricRow.MAY__c}
+                           </td>
+                           <td key={metricRow.JUN__c} data-label="family">
+                                {metricRow.JUN__c}
+                           </td>
+                           <!-- rgb(113, 177, 41) -->
+                           <td key={metricRow.Q1__c} data-label="family" style="background-color:rgb(224, 153, 60);">
+                                {metricRow.Q1__c}
+                           </td>
+                           <td key={metricRow.JUL__c} data-label="family">
+                                {metricRow.JUL__c}
+                           </td>
+                           <td key={metricRow.AUG__c} data-label="family">
+                                {metricRow.AUG__c}
+                           </td>
+                           <td key={metricRow.SEP__c} data-label="family">
+                                {metricRow.SEP__c}
+                           </td>
+                           <td key={metricRow.Q2__c} data-label="family" style="background-color: rgb(224, 153, 60);">
+                                {metricRow.Q2__c}
+                           </td>
+                           <td key={metricRow.OCT__c} data-label="family">
+                                {metricRow.OCT__c}
+                           </td>
+                           <td key={metricRow.NOV__c} data-label="family">
+                                {metricRow.NOV__c}
+                           </td>
+                           <td key={metricRow.DEC__c} data-label="family">
+                                {metricRow.DEC__c}
+                           </td>
+                           <td key={metricRow.Q3__c} data-label="family" style="background-color: rgb(224, 153, 60);">
+                                {metricRow.Q3__c}
+                           </td>
+                           <td key={metricRow.JAN__c} data-label="family">
+                                {metricRow.JAN__c}
+                           </td>
+                           <td key={metricRow.FEB__c} data-label="family">
+                                {metricRow.FEB__c}
+                           </td>
+                           <td key={metricRow.MAR__c} data-label="family">
+                                {metricRow.MAR__c}
+                           </td>
+                           <td key={metricRow.Q4__c} data-label="family" style="background-color: rgb(224, 153, 60);">
+                                {metricRow.Q4__c}
+                           </td>
+                
+                        </tr>
+                            </template>
+                       </template>
+                </template>
+            </template>
+        </tbody>
+        </table>
+    </div>
+</template>
+    </div>
+</template>

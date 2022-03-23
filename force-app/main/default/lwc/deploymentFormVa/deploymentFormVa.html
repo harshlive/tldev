@@ -1,0 +1,73 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-16-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+	<template if:true={productShowData.length}>
+
+		<lightning-layout>
+			<div class="slds-box" >
+			<lightning-layout-item size="2" padding="around-small">
+				<div>
+					<div  class="slds-align_absolute-center " style = "background: #409cff;color: white;font-size: large; text-transform: uppercase">
+						Enter Full Value 
+					</div>
+				</div>
+			</lightning-layout-item>
+			<lightning-layout-item size="10" padding="around-small">
+
+
+
+				<lightning-layout multiple-rows>
+					<template for:each={productShowData} for:item="row" for:index="indexParent">
+
+						<lightning-layout-item size="2" key={row.Product_Name__c} padding="around-small">
+							<div>
+								<lightning-input style="height:60px" if:true={isWeek1} value={row.Week_1__c}
+									data-family={row.Product_Family__c} data-item={row.Product_Name__c}
+									key={row.Product_Name__c} type="number" name="input2" label={row.Product_Name__c}
+									onblur={changeQuantity}>
+								</lightning-input>
+
+								<lightning-input style="height:60px" if:true={isWeek2} value={row.Week_2__c}
+									data-family={row.Product_Family__c} data-item={row.Product_Name__c}
+									key={row.Product_Name__c} type="number" name="input2" label={row.Product_Name__c}
+									onblur={changeQuantity}>
+								</lightning-input>
+								<lightning-input style="height:60px" if:true={isWeek3} value={row.Week_3__c}
+									data-family={row.Product_Family__c} data-item={row.Product_Name__c}
+									key={row.Product_Name__c} type="number" name="input3" label={row.Product_Name__c}
+									onblur={changeQuantity}>
+								</lightning-input>
+								<lightning-input style="height:60px" if:true={isWeek4} value={row.Week_4__c}
+									data-family={row.Product_Family__c} data-item={row.Product_Name__c}
+									key={row.Product_Name__c} type="number" name="input4" label={row.Product_Name__c}
+									onblur={changeQuantity}>
+								</lightning-input>
+								<lightning-input style="height:60px" if:true={isWeek5} value={row.Week_5__c}
+									data-family={row.Product_Family__c} data-item={row.Product_Name__c}
+									key={row.Product_Name__c} type="number" name="input5" label={row.Product_Name__c}
+									onblur={changeQuantity}>
+								</lightning-input>
+
+							</div>
+						</lightning-layout-item>
+
+					</template>
+				</lightning-layout>
+
+
+			</lightning-layout-item>
+			</div>
+		</lightning-layout>
+	</template>
+	<center><div style = "background: #409cff;color: white;font-size: large; text-transform: uppercase">Total VA Value ( In INR ) : {totalValue}</div></center>
+	<div>
+		<lightning-spinner if:true={showSpinner} variant="brand" alternative-text="Loading" size="small">
+		</lightning-spinner>
+	</div>
+
+</template>
